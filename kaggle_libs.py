@@ -19,3 +19,6 @@ def read_kaggle_data(input_path="../input"):
 	test["isTrain"] = False
 
 	tt = pd.concat([train, test]).reset_index(drop=True).copy()
+
+	print(f"Train shape: {train.shape}. Test shape: {test.shape}. Train test shape: {tt.shape}")
+	return train, test, ss, tt
