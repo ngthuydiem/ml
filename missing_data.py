@@ -92,7 +92,7 @@ def evaluate_missing_indicators(data, nacols):
 
 
 @timeit
-def impute_with_sklearn_simple(data): # fast
+def impute_with_sklearn_simple(data, field): # fast
 	from sklearn.impute import SimpleImputer
 	imptr = SimpleImputer(strategy="mean", add_indicator=False)
 
@@ -104,7 +104,7 @@ def impute_with_sklearn_simple(data): # fast
 	tt_impute = imptr.fit_transform(data.tt[data.features])
 	tt_simple_impute = pd.DataFrame(tt_impute, columns=data.features)
 
-	tt_simple_impute['song_duration_ms'].plot(
+	tt_simple_impute[field].plot(
 		kind='hist',
 		bins=50,
 		title='Simple Impute',
@@ -116,7 +116,7 @@ def impute_with_sklearn_simple(data): # fast
 
 
 @timeit
-def impute_with_sklearn_iterative(data): # fast
+def impute_with_sklearn_iterative(data, field): # fast
 	from sklearn.experimental import enable_iterative_imputer  # noqa
 	from sklearn.impute import IterativeImputer
 
@@ -128,7 +128,7 @@ def impute_with_sklearn_iterative(data): # fast
 	# Create train test imputed dataframe
 	tt_iter_imp_df = pd.DataFrame(tt_iterimp, columns=data.features)
 
-	tt_iter_imp_df['song_duration_ms'].plot(
+	tt_iter_imp_df[field].plot(
 		kind='hist',
 		bins=50,
 		title='Iterative Impute',
@@ -141,7 +141,7 @@ def impute_with_sklearn_iterative(data): # fast
 
 
 @timeit
-def impute_with_knn(data): # slowest
+def impute_with_knn(data, field): # slowest
 	# https://scikit-learn.org/stable/modules/generated/sklearn.impute.KNNImputer.html
 	from sklearn.impute import KNNImputer
 
@@ -154,7 +154,7 @@ def impute_with_knn(data): # slowest
 	# Create KNN Train/Test imputed dataframe
 	knn_imp_df = pd.DataFrame(tt_imp, columns=data.features)
 
-	knn_imp_df['song_duration_ms'].plot(
+	knn_imp_df[field].plot(
 		kind='hist',
 		bins=50,
 		title='KNN Impute',
@@ -165,7 +165,7 @@ def impute_with_knn(data): # slowest
 	return knn_imp_df
 
 @timeit
-def impute_with_lgbm(data): # slower
+def impute_with_lgbm(data, field): # slower
 	# https://github.com/analokmaus/kuma_utils/blob/master/preprocessing/imputer.py
 	import sys
 	sys.path.append("kuma_utils/")
@@ -186,7 +186,7 @@ def impute_with_lgbm(data): # slower
 	                         tt_lgbmimp], axis=1)
 
 	# check the imputation distribution
-	tt_lgbm_imp['song_duration_ms'].plot(
+	tt_lgbm_imp[field].plot(
 		kind='hist',
 		bins=50,
 		title='LGBM Impute',
