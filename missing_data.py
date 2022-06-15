@@ -44,10 +44,14 @@ def show_missing_values(data):
 	ncounts = ncounts.rename(columns={0: "train_missing", 1: "test_missing"})
 
 	ncounts_train_missing = ncounts.query("train_missing > 0") 
-	ncounts_train_missing.plot(
-	    kind="barh", figsize=(8, 5), title="% of Values Missing"
-	)
-	plt.show()
+	try:
+		ncounts_train_missing.plot(
+		    kind="barh", figsize=(8, 5), title="% of Values Missing"
+		)
+		plt.show()
+	except IndexError:
+		print('No missing values!')
+
 
 	return list(ncounts_train_missing.index) # names of fields with missing values
 
