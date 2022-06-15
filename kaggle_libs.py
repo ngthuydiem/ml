@@ -22,3 +22,13 @@ def read_kaggle_data(input_path="../input"):
 
 	print(f"Train shape: {train.shape}. Test shape: {test.shape}. Train test shape: {tt.shape}")
 	return train, test, ss, tt
+
+
+def show_missing_values(train, test):
+	ncounts = pd.DataFrame([train.isna().mean(), test.isna().mean()]).T
+	ncounts = ncounts.rename(columns={0: "train_missing", 1: "test_missing"})
+
+	ncounts.query("train_missing > 0").plot(
+	    kind="barh", figsize=(8, 5), title="% of Values Missing"
+	)
+	plt.show()
