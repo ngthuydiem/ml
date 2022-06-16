@@ -12,4 +12,4 @@ def add_kfold(data):
 
     print(data.train.sample(3))
 
-    data.train.to_csv("../input/train_folds.csv", index=False)
+    data.train.to_csv(f"{data.input_path}/train_folds.csv", index=False)
